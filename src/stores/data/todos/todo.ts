@@ -1,9 +1,10 @@
 import { action, observable, reaction } from 'mobx'
+import TodoStore from './todo-store';
 
 let runningID = 0
 
-class Todo {
-    id: number = runningID++;
+export default class Todo {
+    id: number;
 
     userID: number
 
@@ -13,9 +14,12 @@ class Todo {
     @observable
     isCompleted: boolean = false;
 
-    private disposer: () => void;
+    private readonly disposer: () => void;
+    private store: TodoStore
 
-    constructor(name: string, userID: number) {
+    constructor(name: string, userID: number, store: TodoStore) {
+        this.store = store
+        this.id = runningID++
         this.name = name;
         this.userID = userID
 
@@ -27,6 +31,10 @@ class Todo {
                     }`
                 )
         );
+    }
+
+    remove() {
+        this.store.removeTodo(this.name)
     }
 
     @action
@@ -43,5 +51,3 @@ class Todo {
         this.disposer();
     }
 }
-
-export default Todo

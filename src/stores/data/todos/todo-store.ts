@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction, when } from "mobx";
+import { action, computed, observable } from "mobx";
 import RootStore from "../../root-store";
 import Todo from "./todo";
 
@@ -16,6 +16,8 @@ export default class TodoStore {
         //     () => console.log(`Current Todo Count: ${this.todoList.length}, Done Todos: ${this.completeTodos}, Incomplete Todos ${this.incompleteTodos}`)
         // )
 
+        // reaction, when 
+
         // when(
         //     () => this.todoList.length > 0 && this.todoList.every(todo => todo.isCompleted),
         //     () => console.log(`Congrats!`)
@@ -24,7 +26,7 @@ export default class TodoStore {
 
     @action
     addTodo(name: string, userID: number) {
-        this.todoList.push(new Todo(name, userID));
+        this.todoList.push(new Todo(name, userID, this));
     }
 
     getUserTodos(userID: number) {
